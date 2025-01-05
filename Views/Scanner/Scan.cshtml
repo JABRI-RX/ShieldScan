@@ -33,16 +33,17 @@ ViewData["title"] = "Project Scanner";
     </form>
     <div>
         <div class="grid grid-cols-4  gap-4">
-            @foreach (var package in @Model)
+            @foreach (var package in Model)
             {
                 string mavenUrl = $"https://mvnrepository.com/artifact/{package.PackageName}/{package.ArtifactName}/{package.Version}";
-                
+
                 <a href="@mavenUrl" class="bg-green-400 text-[#282c34] border-3  p-3  font-bold rounded-md " target="_blank">
                     <p>@package.PackageName </p>
                     <p>@package.ArtifactName </p>
                     <p class="text-white text-right font-bold">@package.Version </p>
                 </a>
             }
+
         </div>
         
     </div>

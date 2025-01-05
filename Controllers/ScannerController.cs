@@ -27,13 +27,13 @@ namespace VulnAsset.Controllers
         [HttpGet]
         public IActionResult Scan()
         {
-            return View();
+            return View(new List<Package>());
         }
         [HttpPost]
         public async Task<IActionResult> Scan(IList<IFormFile> file) 
         {
             string resultText = "",resultColor = "";
-            IList<Package> m_packages = new List<Package>();
+            IList<Package> mPackages = new List<Package>();
             try
             {
                 string result = await _processFile.ProcessFile(file[0]);
@@ -56,7 +56,7 @@ namespace VulnAsset.Controllers
                         resultColor = "error";
                         break;
                     default:
-                        m_packages =  _extractMetaData.ExtractPackagesMetaDataFromString(result);
+                        mPackages =  _extractMetaData.ExtractPackagesMetaDataFromString(result);
                         resultText = "The File Is Uploaded Wait For the Result ";
                         resultColor = "success";
                         //send to the result page
@@ -75,7 +75,7 @@ namespace VulnAsset.Controllers
             }
             ViewData["resultText"] = resultText;
             ViewData["resultColor"] = resultColor;
-            return View(m_packages);
+            return View(mPackages);
         }
         public IActionResult Howitworks()
         {
