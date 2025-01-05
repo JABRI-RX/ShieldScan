@@ -1,0 +1,49 @@
+﻿@model IList<VulnAsset.structs.Package>
+@{
+ViewData["title"] = "Project Scanner";
+}
+<div class="space-y-3">
+    <p class="font-extrabold text-center text-4xl">Scan Your <span class="leading-normal   bg-green-400 text-black rounded-xl py-1 px-2">Project</span> Now</p>
+    <p></p>
+    @if (ViewData["resultText"] != null)
+    {
+        <script>
+            const text = "@ViewData["resultText"]";
+            const type = "@ViewData["resultColor"]";
+            const  code = `toastr.${type}('${text}')`;
+            //alert(code)
+            eval(code)
+        </script>
+    }
+    <form class="space-y-4" method="post"  enctype="multipart/form-data" asp-controller="Scanner" asp-action="Scan">
+        <!-- File Input -->
+        <div class="flex justify-center" >
+            <label class="block">
+                <span class="block text-sm font-medium text-gray-700">Upload your project file</span>
+                <input type="file" name="file" class="mt-1 block  px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </label>
+        </div>
+         
+        <div class="flex justify-center">
+            <button onclick="" type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-black font-extrabold bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                Scan Project
+            </button>    
+        </div>
+        <!-- Submit Button -->
+    </form>
+    <div>
+        <div class="grid grid-cols-4  gap-4">
+            @foreach (var package in @Model)
+            {
+                string mavenUrl = $"https://mvnrepository.com/artifact/{package.PackageName}/{package.ArtifactName}/{package.Version}";
+                
+                <a href="@mavenUrl" class="bg-green-400 text-[#282c34] border-3  p-3  font-bold rounded-md " target="_blank">
+                    <p>@package.PackageName </p>
+                    <p>@package.ArtifactName </p>
+                    <p class="text-white text-right font-bold">@package.Version </p>
+                </a>
+            }
+        </div>
+        
+    </div>
+</div>
