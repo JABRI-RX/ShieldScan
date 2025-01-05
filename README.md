@@ -16,3 +16,5 @@ This application, built using .NET MVC Razor Pages, is a dedicated security tool
 ![interface 2](./wwwroot/interface_2.png)
 ### Scan Page
 ![interface 3](./wwwroot/interface_3.png)
+## Error Handling 
+### Scan Page
