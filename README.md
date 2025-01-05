@@ -1,4 +1,4 @@
-# ShieldScan
+![logo](./wwwroot/logo.png)
 This application, built using .NET MVC Razor Pages, is a dedicated security tool that helps developers detect vulnerabilities in their Maven dependencies. By processing a list of dependencies from an uploaded text file, the app analyzes and cross-references them with a vulnerability database to generate a comprehensive security report.
 
 How It Works:
