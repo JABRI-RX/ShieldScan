@@ -13,6 +13,6 @@ This application, built using .NET MVC Razor Pages, is a dedicated security tool
 ### Home Page
 ![interface 1](./wwwroot/interface_1.PNG)
 ### How It Works Page
-![interface 1](./wwwroot/interface_2.PNG)
+![interface 2](./wwwroot/interface_2.png)
 ### Scan Page
-![interface 1](./wwwroot/interface_3.PNG)
+![interface 3](./wwwroot/interface_3.png)
