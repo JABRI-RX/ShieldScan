@@ -10,3 +10,11 @@ This application, built using .NET MVC Razor Pages, is a dedicated security tool
 
 - Export Options: The final report can be downloaded as a PDF, providing a shareable and easy-to-reference format for teams.
 ## Platform UI
+### Home Page
+![interface 1](./wwwroot/interface_1.PNG)
+### How It Works Page
+![interface 2](./wwwroot/interface_2.png)
+### Scan Page
+![interface 3](./wwwroot/interface_3.png)
+## Error Handling 
+### Scan Page
