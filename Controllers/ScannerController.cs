@@ -10,13 +10,15 @@ namespace VulnAsset.Controllers
     {
         private readonly IProcessFile _processFile;
         private readonly IExtractMetaData _extractMetaData;
+        private readonly IScanner _scanner;
         public ScannerController(
-            ILogger<ScannerController> logger, 
             IProcessFile processFile,
-            IExtractMetaData extractMetaData)
+            IExtractMetaData extractMetaData,
+            IScanner scanner)
         {
             _processFile = processFile;
             _extractMetaData = extractMetaData;
+            _scanner = scanner;
         }
         // GET: Scanner
         [HttpGet]
@@ -34,6 +36,7 @@ namespace VulnAsset.Controllers
         {
             string resultText = "",resultColor = "";
             IList<Package> mPackages = new List<Package>();
+            long timedItTook = 0;
             try
             {
                 string result = await _processFile.ProcessFile(file[0]);
@@ -54,16 +57,20 @@ namespace VulnAsset.Controllers
                     case "file-not-valid":
                         resultText = "The File Has been Tampered With Please Upload a Valid File Or you will be blocked";
                         resultColor = "error";
-                        break;
+                        break; 
                     default:
+                        var watch = System.Diagnostics.Stopwatch.StartNew();
                         mPackages =  _extractMetaData.ExtractPackagesMetaDataFromString(result);
+                        _scanner.ScanFiles(mPackages);
                         resultText = "The File Is Uploaded Wait For the Result ";
                         resultColor = "success";
+                        watch.Stop();
+                        timedItTook = watch.ElapsedMilliseconds;
                         //send to the result page
                         break;
                 }
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 resultText = "Please Upload A File Man";
                 resultColor = "error";
@@ -75,12 +82,27 @@ namespace VulnAsset.Controllers
             }
             ViewData["resultText"] = resultText;
             ViewData["resultColor"] = resultColor;
+            ViewData["timetook"] = timedItTook;
             return View(mPackages);
+            // return RedirectToAction("Dashboard");
         }
+        [HttpGet]
         public IActionResult Howitworks()
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult Dashboard()
+        {
+            
+            return View();
+        }
 
+        [HttpPost]
+        public IActionResult Dashboard(IList<Package> packages)
+        {
+
+            return View();
+        }
     }
 }

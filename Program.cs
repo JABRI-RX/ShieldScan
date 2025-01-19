@@ -19,6 +19,7 @@ builder.Services.AddControllersWithViews();
 //Services
 builder.Services.AddSingleton<IProcessFile,ProcessFileImpl>();
 builder.Services.AddSingleton<IExtractMetaData,ExtractMetaDataImp>();
+builder.Services.AddSingleton<IScanner,ScannerImpl>();
 //end
 var app = builder.Build();
 

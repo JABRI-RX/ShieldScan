@@ -25,7 +25,8 @@ public class ExtractMetaDataImp:IExtractMetaData
                 {
                     PackageName = splittedLine[0],
                     ArtifactName = splittedLine[1],
-                    Version = splittedLine[3]
+                    CurrentVersion = splittedLine[3],
+                    NewVersion =splittedLine[3] 
                 });
 
             }

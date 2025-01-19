@@ -1,50 +1,84 @@
 ﻿@model IList<VulnAsset.structs.Package>
 @{
-ViewData["title"] = "Project Scanner";
+    ViewData["title"] = "Project Scanner";
 }
 <div class="space-y-3">
-    <p class="font-extrabold text-center text-4xl">Scan Your <span class="leading-normal   bg-green-400 text-black rounded-xl py-1 px-2">Project</span> Now</p>
+    <p class="font-extrabold text-center text-4xl">Scan Your <span
+            class="leading-normal   bg-green-400 text-black rounded-xl py-1 px-2">Project</span> Now</p>
     <p></p>
     @if (ViewData["resultText"] != null)
     {
         <script>
             const text = "@ViewData["resultText"]";
             const type = "@ViewData["resultColor"]";
-            const  code = `toastr.${type}('${text}')`;
+            const code = `toastr.${type}('${text}')`;
             //alert(code)
             eval(code)
+            const audio = new Audio("https://cdn.pixabay.com/download/audio/2024/10/01/audio_f76ff67c94.mp3?filename=reverby-notification-sound-246407.mp3");
+            audio.play();
         </script>
     }
-    <form class="space-y-4" method="post"  enctype="multipart/form-data" asp-controller="Scanner" asp-action="Scan">
+    <form class="space-y-4" method="post" enctype="multipart/form-data" asp-controller="Scanner" asp-action="Scan">
         <!-- File Input -->
-        <div class="flex justify-center" >
+        <div class="text-center">
+            <p>Depending On The Project Each Package Scan Takes Around 3 seconds </p>
+        </div>
+        <div class="flex justify-center">
             <label class="block">
                 <span class="block text-sm font-medium text-gray-700">Upload your project file</span>
-                <input type="file" name="file" class="mt-1 block  px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                <input type="file" name="file"
+                       class="mt-1 block  px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500">
             </label>
         </div>
-         
+
         <div class="flex justify-center">
-            <button onclick="" type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-black font-extrabold bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+            <button onclick="" type="submit"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-black font-extrabold bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                 Scan Project
-            </button>    
+            </button>
         </div>
+
         <!-- Submit Button -->
     </form>
     <div>
+        <p class="font-extrabold text-center text-2xl">There Are @Model.Count Packages</p>
+        <br/>
+        <p class="font-extrabold text-center text-xl">It Took @ViewData["timetook"] ms</p>
+
         <div class="grid grid-cols-4  gap-4">
             @foreach (var package in Model)
             {
-                string mavenUrl = $"https://mvnrepository.com/artifact/{package.PackageName}/{package.ArtifactName}/{package.Version}";
-
-                <a href="@mavenUrl" class="bg-green-400 text-[#282c34] border-3  p-3  font-bold rounded-md " target="_blank">
-                    <p>@package.PackageName </p>
-                    <p>@package.ArtifactName </p>
-                    <p class="text-white text-right font-bold">@package.Version </p>
+                var mavenUrl = $"https://mvnrepository.com/artifact/{package.PackageName}/{package.ArtifactName}/{package.CurrentVersion}";
+                var vulnBgColor = package.Vulnerabilities.Count > 1 ? "bg-red-400" : "bg-green-400";
+                <a
+                    href="@mavenUrl"
+                    class="@vulnBgColor text-[#282c34] border-3 p-3 font-bold rounded-md "
+                    target="_blank"
+                    title="Yes Fuck"
+                >
+                    <span class="flex justify-content-between">
+                        <p class="text-white  font-bold"> ArtifactName : </p>
+                        <p class="text-white  font-bold"> @package.ArtifactName </p>
+                    </span>
+                    <span class="flex justify-content-between">
+                        <p class="text-white  font-bold"> Current Version :</p>
+                        <p class="text-white  font-bold"> @package.CurrentVersion </p>
+                    </span>
+                    <span class="flex justify-content-between">
+                        <p class="text-white  font-bold"> New Version :</p>
+                        <p class="text-white  font-bold"> @package.NewVersion </p>
+                    </span>
+                    <span class="flex justify-content-between">
+                        <p class="text-white  font-bold"> Numbers Of Vulnerabilities : </p>
+                        <p class="text-white  font-bold"> @package.Vulnerabilities.Count </p>
+                    </span>
                 </a>
             }
 
+            @{
+                const string param = "working on partial views";
+            }
+            @Html.Partial("testingPrt",Model)
         </div>
-        
     </div>
 </div>
