@@ -17,4 +17,4 @@ This application, built using .NET MVC Razor Pages, is a dedicated security tool
 ### Scan Page
 ![interface 3](./wwwroot/interface_3.png)
 ### Result Scan
-![interfac 4]("./wwwroot/Screenshot 2025-01-20 at 11-37-00 Project Scanner - VulnAsset.png")
+![interfac 4](./wwwroot/images/resultScan.png)
