@@ -1,0 +1,168 @@
+﻿@using OpenQA.Selenium.BiDi.Modules.Script
+@model IList<VulnAsset.structs.Package>
+@{
+    ViewData["title"] = "Dashboard";
+    var safePackagesCount = 0;
+    var vulnPackagesCount = 0;
+    var updatePackagesCount = 0;
+    foreach (var package in Model)
+    {
+        if (package.Vulnerabilities.Count > 0)
+        {
+            vulnPackagesCount += 1;
+            continue;
+        }
+
+        if (package.CurrentVersion.SequenceEqual(package.NewVersion))
+        {
+            safePackagesCount += 1;
+        }
+        else
+        {
+            updatePackagesCount += 1;
+        }
+    }
+}
+<div class="flex w-[100%] ">
+    <div class="flex flex-col flex-1 w-full overflow-y-auto">
+        <main class="">
+            <div class="space-y-5 grid mb-4 pb-10 px-8 mx-4 rounded-3xl bg-white border-3  ">
+                <div class="grid grid-cols-12 gap-6">
+                    <div class="grid grid-cols-12 col-span-12 gap-6 xxl:col-span-9">
+                        <div class="col-span-12 mt-8">
+                            <div class=" h-10 intro-y">
+                                <p class="font-extrabold   text-4xl">The Statistics for Your Project Scan </p>
+                            </div>
+                            <p class="font-extrabold text-right text-2xl">@Model.Count Packages</p>
+                            <p class="font-extrabold text-right text-xl">@ViewData["timetook"] ms</p>
+                            <div class="grid grid-cols-9 gap-6 mt-5">
+                                <a class="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-green-400"
+                                   href="#">
+                                    <div class="p-5">
+                                        <div class="ml-2 w-full flex-1">
+                                            <div>
+                                                <div class="mt-1 text-xl  font-black text-white">Secure Dependencies
+                                                </div>
+                                                <div
+                                                    class="mt-3 text-3xl font-black leading-8 text-white">@safePackagesCount</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-red-400"
+                                   href="#vulns">
+                                    <div class="p-5">
+
+                                        <div class="ml-2 w-full flex-1">
+                                            <div>
+                                                <div class="mt-1 text-xl  font-black text-white">Vulnerable
+                                                    Dependencies
+                                                </div>
+                                                <div
+                                                    class="mt-3 text-3xl font-black leading-8 text-white">@vulnPackagesCount</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-yellow-400"
+                                   href="#">
+                                    <div class="p-5">
+
+                                        <div class="ml-2 w-full flex-1">
+                                            <div>
+                                                <div class="mt-1 text-xl font-black text-white">Non Vulnerable Needs
+                                                    Update
+                                                </div>
+                                                <div
+                                                    class="mt-3 text-3xl font-black text-white leading-8">@updatePackagesCount</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-span-12 mt-5">
+                            <div class="    lg:grid-cols-2">
+                                <div class="bg-white shadow-lg" id="chartpie"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-xl text-left  font-light text-white table-fixed border-4">
+                        <thead class="text-xs text-white uppercase  bg-[#282c34]">
+                        <tr>
+                            <th scope="col" class="px-3 py-3 w-1/5">
+                                Artifact Name
+                            </th>
+                            <th scope="col" class="px-3 py-3 w-1/5">
+                                Current Version
+                            </th>
+                            <th scope="col" class="px-3 py-3 w-1/5">
+                                New Version
+                            </th>
+                            <th scope="col" class="px-3 py-3 w-1/5">
+                                Vulnerabilities
+                            </th>
+                            <th scope="col" class="px-3 py-3 w-1/5">
+                                Maven URL
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var package in Model)
+                        {
+                            var vulnBgColor = package.Vulnerabilities.Count > 0 ? "bg-red-400" : package.NewVersion.SequenceEqual(package.CurrentVersion) ? "bg-green-400" : "bg-yellow-400";    
+                            var mavenUrl = $"https://mvnrepository.com/artifact/{package.PackageName}/{package.ArtifactName}/{package.CurrentVersion}";
+                            <tr scope="row" class=" border-b @vulnBgColor rounded-xl">
+
+                                <td class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap ">
+                                    @package.ArtifactName
+                                </td>
+                                <td class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    @package.CurrentVersion
+                                </td>
+                                <td class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    @package.NewVersion
+                                </td>
+                                <td class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    @foreach (var cve in package.Vulnerabilities)
+                                    {
+                                        <p id="vulns">@cve</p>
+                                    }
+                                </td>
+                                <td class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    <a href="@mavenUrl" target="_blank" >
+                                        <img class="w-[25%]" src="~/images/externalLinkIcon.svg" alt="link">                                        
+                                    </a>
+
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    var options = {
+        series: [@safePackagesCount, @vulnPackagesCount, @updatePackagesCount],
+        chart: {
+            width: 800,
+            type: 'donut',
+            zoom: {
+                enabled: true,
+            }
+        },
+        labels: [' Secure Dependencies', 'Vulnerable Dependencies', 'Non Vulnerable Needs Update'],
+        legend: {},
+        colors: ["#4ade80", "#f87171", "#facc15"],
+    };
+    const chart = new ApexCharts(document.querySelector("#chartpie"), options);
+    chart.render();
+</script>
+ 

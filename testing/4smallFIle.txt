@@ -1,7 +1,10 @@
 [INFO]
 [INFO] The following files have been resolved:
 [INFO]    org.springframework:spring-webmvc:jar:6.1.13:compile -- module spring.webmvc [auto]
-[INFO]
+[INFO]    net.minidev:accessors-smart:jar:2.5.1:test -- module accessors.smart (auto)
+[INFO]    org.ow2.asm:asm:jar:9.6:test -- module org.objectweb.asm
+[INFO]    org.assertj:assertj-core:jar:3.25.3:test -- module org.assertj.core
+[INFO]    org.awaitility:awaitility:jar:4.2.2:test -- module awaitility (auto)
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------

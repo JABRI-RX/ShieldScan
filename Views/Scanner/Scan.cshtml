@@ -2,83 +2,89 @@
 @{
     ViewData["title"] = "Project Scanner";
 }
-<div class="space-y-3">
-    <p class="font-extrabold text-center text-4xl">Scan Your <span
-            class="leading-normal   bg-green-400 text-black rounded-xl py-1 px-2">Project</span> Now</p>
-    <p></p>
-    @if (ViewData["resultText"] != null)
-    {
-        <script>
-            const text = "@ViewData["resultText"]";
-            const type = "@ViewData["resultColor"]";
-            const code = `toastr.${type}('${text}')`;
-            //alert(code)
-            eval(code)
-            const audio = new Audio("https://cdn.pixabay.com/download/audio/2024/10/01/audio_f76ff67c94.mp3?filename=reverby-notification-sound-246407.mp3");
-            audio.play();
-        </script>
-    }
-    <form class="space-y-4" method="post" enctype="multipart/form-data" asp-controller="Scanner" asp-action="Scan">
-        <!-- File Input -->
-        <div class="text-center">
-            <p>Depending On The Project Each Package Scan Takes Around 3 seconds </p>
-        </div>
-        <div class="flex justify-center">
-            <label class="block">
-                <span class="block text-sm font-medium text-gray-700">Upload your project file</span>
-                <input type="file" name="file"
-                       class="mt-1 block  px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500">
-            </label>
-        </div>
 
-        <div class="flex justify-center">
-            <button onclick="" type="submit"
-                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-black font-extrabold bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                Scan Project
-            </button>
-        </div>
+<div>
+    <!-- Modal toggle -->
+    <div class="flex justify-content-center">
+        <button data-modal-target="default-modal" data-modal-toggle="default-modal"
+                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-black font-extrabold bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 "
+                type="button">
+            How To Submit The File
+        </button>
+    </div>
 
-        <!-- Submit Button -->
-    </form>
-    <div>
-        <p class="font-extrabold text-center text-2xl">There Are @Model.Count Packages</p>
-        <br/>
-        <p class="font-extrabold text-center text-xl">It Took @ViewData["timetook"] ms</p>
+    <!-- Main modal -->
+    <div id="default-modal" tabindex="-1" aria-hidden="true"
+         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow  ">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t  ">
+                    <h3 class="text-xl font-semibold text-gray-900  ">
+                        How To Submit The File
+                    </h3>
+                    <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center  "
+                            data-modal-hide="default-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">
+                    <p class="text-base leading-relaxed text-gray-500  ">
+                        First Open The Terminal Or Powershell(depending whether you are on windows or Unix systems)
+                        just type this command in the image bellow it should generate the maven list file that it should be submited 
+                        in the next step
+                    </p>
+                    <img src="~/images/getmavenfiles.png" alt="How to get the file"/>
+                </div>
 
-        <div class="grid grid-cols-4  gap-4">
-            @foreach (var package in Model)
-            {
-                var mavenUrl = $"https://mvnrepository.com/artifact/{package.PackageName}/{package.ArtifactName}/{package.CurrentVersion}";
-                var vulnBgColor = package.Vulnerabilities.Count > 1 ? "bg-red-400" : "bg-green-400";
-                <a
-                    href="@mavenUrl"
-                    class="@vulnBgColor text-[#282c34] border-3 p-3 font-bold rounded-md "
-                    target="_blank"
-                    title="Yes Fuck"
-                >
-                    <span class="flex justify-content-between">
-                        <p class="text-white  font-bold"> ArtifactName : </p>
-                        <p class="text-white  font-bold"> @package.ArtifactName </p>
-                    </span>
-                    <span class="flex justify-content-between">
-                        <p class="text-white  font-bold"> Current Version :</p>
-                        <p class="text-white  font-bold"> @package.CurrentVersion </p>
-                    </span>
-                    <span class="flex justify-content-between">
-                        <p class="text-white  font-bold"> New Version :</p>
-                        <p class="text-white  font-bold"> @package.NewVersion </p>
-                    </span>
-                    <span class="flex justify-content-between">
-                        <p class="text-white  font-bold"> Numbers Of Vulnerabilities : </p>
-                        <p class="text-white  font-bold"> @package.Vulnerabilities.Count </p>
-                    </span>
-                </a>
-            }
-
-            @{
-                const string param = "working on partial views";
-            }
-            @Html.Partial("testingPrt",Model)
+            </div>
         </div>
     </div>
+</div>
+
+@if (ViewData["resultText"] != null)
+{
+    <script>
+        const text = "@ViewData["resultText"]";
+        const type = "@ViewData["resultColor"]";
+        const code = `toastr.${type}('${text}')`;
+        //alert(code)
+        eval(code)
+        const audio = new Audio("https://cdn.pixabay.com/download/audio/2024/10/01/audio_f76ff67c94.mp3?filename=reverby-notification-sound-246407.mp3");
+        audio.play();
+    </script>
+}
+<form class="space-y-4" method="post" enctype="multipart/form-data" asp-controller="Scanner" asp-action="Scan">
+    <!-- File Input -->
+
+    <div class="flex justify-center">
+        <label class="block">
+            <span class="block text-sm font-medium text-gray-700">Upload your project file</span>
+            <input type="file" name="file"
+                   class="mt-1 block  px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500">
+        </label>
+    </div>
+    <div class="flex justify-center">
+        <button onclick="" type="submit"
+                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-black font-extrabold bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+            Scan Project
+        </button>
+    </div>
+    <br/>
+    <!-- Submit Button -->
+</form>
+<div>
+    @if (Model.Count > 0)
+    {
+        @Html.Partial("generateDashboard", Model, ViewData)
+    }
+    @* @Html.Partial("testingPrt",Model) *@
 </div>

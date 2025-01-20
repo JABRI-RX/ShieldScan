@@ -4,5 +4,5 @@ namespace VulnAsset.Services.Manager;
 
 public interface IExtractMetaData
 {
-    public IList<Package> ExtractPackagesMetaDataFromString(string data);
+    public List<Package> ExtractPackagesMetaDataFromString(string data);
 }

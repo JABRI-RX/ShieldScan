@@ -5,17 +5,15 @@ namespace VulnAsset.Services;
 
 public class ExtractMetaDataImp:IExtractMetaData
 {
-    public IList<Package> ExtractPackagesMetaDataFromString(string result)
+    public List<Package> ExtractPackagesMetaDataFromString(string result)
     {
-        IList<Package> packages = new List<Package>();
+        List<Package> packages = new List<Package>();
         try
         {
-            int i = 0;
             foreach (var line in result.Split("\n"))
             {
-                i++;
                 //just skip the lines not containg the : and two lines and the last two lines 
-                if (!line.Contains(':') || i <= 2 || i >= result.Split("\n").Length - 2)
+                if(line.Count(chr=> chr== ':') < 3 ||  line.Contains("Finished") )
                     continue;
                 
                 string cleanedLine = line.Replace("[INFO]", "").Trim();

@@ -1,0 +1,9 @@
+[INFO]
+[INFO] The following files have been resolved:
+[INFO]    org.springframework:spring-webmvc:jar:6.1.13:compile -- module spring.webmvc [auto]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:31 min
+[INFO] Finished at: 2024-12-29T15:40:14+01:00
+ 

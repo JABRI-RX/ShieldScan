@@ -51,7 +51,7 @@ namespace VulnAsset.Controllers
                         resultColor = "error";
                         break;
                     case "file-not-txt":
-                        resultText = "The File Is Not A Text File I have not Implemented Security measurments  ";
+                        resultText = "The File Is Not A Text File I have not Implemented Security measurements  ";
                         resultColor = "error";
                         break;
                     case "file-not-valid":
@@ -89,19 +89,6 @@ namespace VulnAsset.Controllers
         [HttpGet]
         public IActionResult Howitworks()
         {
-            return View();
-        }
-        [HttpGet]
-        public IActionResult Dashboard()
-        {
-            
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Dashboard(IList<Package> packages)
-        {
-
             return View();
         }
     }

@@ -15,19 +15,20 @@ public class ProcessFileImpl : IProcessFile
     {
         const long fileSizeLimit = 1_000_000;//this is 10mb I 
         const string allowedFileExstension = ".txt";
-        string fileName = file.FileName.ToLower();
+        var fileName = file.FileName.ToLower();
         //functions
         if (Path.GetExtension(fileName) != allowedFileExstension)
         {
             return"file-not-txt";
         }
-        if (file.Length == 0) {
-            return "file-empty";
+        switch (file.Length)
+        {
+            case 0:
+                return "file-empty";
+            case >= fileSizeLimit:
+                return"file-too-big";
         }
-        
-        if (file.Length >= fileSizeLimit) {
-            return"file-too-big";
-        }
+
         //check for validity of the text data
         //really just reading the file component
         
@@ -42,6 +43,5 @@ public class ProcessFileImpl : IProcessFile
             //ExtractPackMetaDataFromString()
             return result;
         }
-        return "file-uploaded";
     }
 }
